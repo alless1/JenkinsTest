@@ -16,7 +16,7 @@ android {
         release {
             keyAlias 'ubox_android.keystore'
             keyPassword 'ubox2011'
-            storeFile file('../../../ubox_android.keystore')
+            storeFile file('../../ubox_android.keystore')
             storePassword 'ubox2011'
         }
     }
