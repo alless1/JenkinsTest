@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 android {
@@ -42,11 +44,27 @@ android {
         }
     }
 
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            def newName = "JenkinsTest_${versionName}_${variant.buildType.name}_${buildDate()}.apk"
+//            def outDirectory = output.outputFile.getParent()
+//            if(is_jenkins){
+//                outDirectory = build_path
+//            }
+//            //outputFileName = "${commonId_Value}_${variant.buildType.name}.apk"
+//            output.outputFile = new File(outDirectory,newName);
+//        }
+//    }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${commonId_Value}_${variant.buildType.name}.apk"
+            if(is_jenkins){
+                //jenkins打包修改输出路径
+                variant.getPackageApplication().outputDirectory = new File("${build_path}")
+            }
+            outputFileName = "JenkinsTest_${versionName}_${variant.buildType.name}_${buildDate()}.apk"
         }
     }
+
 }
 
 dependencies {
@@ -57,4 +75,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+}
+
+def buildDate() {
+    return new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
 }
